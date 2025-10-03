@@ -29,7 +29,14 @@ db = client[os.environ['DB_NAME']]
 
 # Install Solidity compiler
 try:
-    install_solc('0.8.20')
+    from solcx import get_installed_solc_versions, install_solc
+    installed_versions = get_installed_solc_versions()
+    if not installed_versions or '0.8.20' not in [str(v) for v in installed_versions]:
+        print("Installing Solidity 0.8.20...")
+        install_solc('0.8.20')
+        print("Solidity 0.8.20 installed successfully")
+    else:
+        print(f"Solidity already installed: {installed_versions}")
 except Exception as e:
     print(f"Solidity installation warning: {e}")
 
